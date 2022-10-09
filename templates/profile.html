@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
+    <title> Profile - Gruuvity </title>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
@@ -36,7 +36,7 @@
             <b> Age </b>: {{value[1]}} <br>
             <b> Gender </b>: {{value[2]}} <br>
             <b> Religion </b>: {{value[3]}} <br>
-            <b><a href="tel:{{value[4]}}" > Contact Number </a></b>: {{value[4]}} <br>
+            <b><a class="link" href="tel:{{value[4]}}" > Contact Number </a></b>: {{value[4]}} <br>
             <b> College </b>: {{value[0]}} <br>
             <b> Job </b>: {{value[6]}} <br>
                 <!-- <a href="{{value[5]}}" > Facebook </a> <br> -->
@@ -391,5 +391,17 @@ header ul ul li a.active
              transform: scale(1.5);
             }
         }
+.link
+{
+  color: gray;
+  background-color: transparent;
+  text-decoration: underline;
+}
+.link:hover {
+  color: white;
+  background-color: transparent;
+  text-decoration: underline;
+  font-weight:bold;
+}
     </style>
 </html>

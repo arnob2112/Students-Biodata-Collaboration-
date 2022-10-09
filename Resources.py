@@ -128,6 +128,6 @@ class Show(Resource):
         connection.commit()
         connection.close()
         usernames = Student.find_all_username()
-        return make_response(render_template("hudai.html", data=info, user=usernames))
+        return make_response(render_template("showinfo.html", data=info, user=usernames))
 
 
