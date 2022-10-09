@@ -1,38 +1,395 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/profile.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
-<body align="center" bgcolor="ADDDD0">
+<body align="center">
 
-    <div class="navbar">
-      <a class="active" href="{{url_for("home")}}"> Home </a>
-      <div class="dropdown">
-        <button class="dropbtn">Profile
-          <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
+    <header>
+       <a href="{{url_for("home")}}" class="logo">STUDENT'S BIODATA</a>
+    <ul type=circle>
+        
+        
+        <li> <a href="{{url_for("home")}}" ><i class="fa fa-fw fa-home"></i>HOME</a></li>
+        <li> <a class="active"><i class="fa fa-fw fa-user"></i>PROFILE</a>
+        <ul>
+            <li>
             {% for key, value in user.items() %}
-              <a href="{{value}}"> {{key}} </a>
+              <a href="{{value}}"> {{key}} </a> <br>
             {% endfor %}
-        </div>
-      </div>
-      <a href="#contact">Contact</a>
-      <a href="#about">About us</a>
-    </div>
-
+            </li>
+             </ul>
+        </li>
+        <li> <a href="#"><i class="fa fa-fw fa-envelope"></i>CONTACT</a></li>
+        <li> <a href="#"><i class="fa fa-fw fa-info"></i>ABOUT US</a></li>
+        </ul>
+        </header><br><br><br><br><br><br><br><br><br>
     {% for key, value in data.items() %}
-        <h2> {{key}} </h2>
-    <b> College </b>: {{value[0]}} <br>
-    <b> Age </b>: {{value[1]}} <br>
-    <b> Gender </b>: {{value[2]}} <br>
-    <b> Religion </b>: {{value[3]}} <br>
-    <b> Contact Number</b>: {{value[4]}} <br>
-    <b> Job </b>: {{value[6]}} <br>
-        <a href="{{value[5]}}" target="_blank"> Facebook </a> <br>
+    <div class="img"> <img src="{{value[7]}}" alt="picture" height="200px" width="200px"> </div> <br><br><br>
+    <div class="info" >
+        <h2> {{key}} </h2> <br><br>
+        <section>
+            <b> Age </b>: {{value[1]}} <br>
+            <b> Gender </b>: {{value[2]}} <br>
+            <b> Religion </b>: {{value[3]}} <br>
+            <b><a href="tel:{{value[4]}}" > Contact Number </a></b>: {{value[4]}} <br>
+            <b> College </b>: {{value[0]}} <br>
+            <b> Job </b>: {{value[6]}} <br>
+                <!-- <a href="{{value[5]}}" > Facebook </a> <br> -->
+        </section>
+    </div>
+    <ul class="social_icon">
+        <li><a href="{{value[5]}}" target="_blank"><ion-icon name="logo-facebook"></ion-icon></a></li>
+        <li><a href="#"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+        <li><a href="#"><ion-icon name="logo-instagram"></ion-icon></a></li>
+        <li><a href="#"><ion-icon name="logo-twitter"></ion-icon></a></li>
+         </ul>
     {%endfor%}
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+    
+    <footer>
+        <div class="star star1"></div>
+        <div class="star star2"></div>
+        <div class="star star3"></div>
+        <div class="star star4"></div>
+        <div class="star star5"></div>
+        <div class="star star6"></div>
+        <div class="star star7"></div>
+        <div class="star star8"></div>
+    </footer>
+    
 </body>
+    
+    <style>
+        {
+        margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+        }
+        body {
+  min-height: 100vh;
+  font-family:sans-serif;
+    background: linear-gradient(20deg,black,#2b1055);
+    justify-content: flex-end;
+    align-items: flex-end;
+    display:inherit;
+    
+       
+}
+
+header
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 1s;
+    
+}
+header .logo
+  {
+      color:white;
+      font-weight:1000;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      font-size: 2em;
+      font-family:sans-serif;
+      text-decoration:none;
+      padding: 9px 15px;
+      border-radius: 50px;
+      border-right-style:solid;
+      border-bottom-style: inset;
+      transition: background 1.5s;
+      margin-left: 20px;
+      
+}
+header .logo:hover
+{
+    background:white;
+    color: #2b1055;
+    
+}
+     header ul  
+{
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+   
+    
+}
+
+    header ul li
+{
+    list-style: none;
+    align-self:flex-start;
+    margin-left: 15px;
+}
+header ul li:hover
+>
+ul{
+    opacity: 1;
+    visibility: visible;
+    top: 70px;
+}
+    header ul li a
+{
+    text-decoration: none;
+    color: aliceblue;
+    padding: 9px 15px;
+    border-radius: 30px;
+    border-right-style:solid;
+    border-bottom-style: solid;
+    border-style: outset;
+    border-width:thin;
+    transition: background 1.5s;
+    
+}
+
+header ul li a:hover,
+header ul li a.active
+{ 
+    background: white;
+    color: black;
+    border-bottom-style: none;
+    border-right-style: none;
+    border-color:#2b1055;
+
+}
+header ul ul
+{
+    position: absolute;
+    top: 100px;
+    opacity: 0;
+    visibility: hidden;
+    transition: top 0.5s;
+    display: list-item;
+    list-style: none;
+    
+}
+    header ul ul li
+{
+    position: relative;
+    margin: 0px;
+    display: list-item;
+    left: 5px;
+    
+    
+    
+}
+    header ul ul li a
+{
+    text-decoration: none;
+    color: aliceblue;
+    border-radius: 30px;
+    border-right-style:solid;
+    border-bottom-style: solid;
+    border-style: outset;
+    border-width:thin;
+    transition: background 1.5s;
+    line-height: 50px;
+   
+    
+}
+
+header ul ul li a:hover,
+header ul ul li a.active
+{ 
+    background: white;
+    color: black;
+    border-bottom-style: none;
+    border-right-style: none;
+    border-color:#2b1055;
+
+}
+        .info h2
+        {
+      
+    
+    text-decoration: none;
+    display: inline-block;
+    margin:0px 12px;
+    padding:10px 120px;
+    
+            background: white;
+            color: black;
+    border: .5px solid white;
+    border-radius: 100px;
+    transition:color 1s;
+    transition: background 1s;
+    position:relative;
+    font-family:cursive;
+    font-size: 1.5em;
+    font-weight: 900;
+   
+        }
+        .info h2:hover
+        {
+            color: white;
+            background: transparent;
+            
+        }
+        .info section {
+     width:inherit;
+            height: inherit;
+    font-family: monospace;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 12px 40px;
+    color: white;
+    text-align: left;
+    border: .5px solid white;
+    position: relative;
+    font-size: 2.2em;
+    font-weight: 600;
+    background-color:transparent;
+    color: white;
+    border: .5px solid white;
+            border-radius: 15px;
+    text-decoration: none;
+    margin: 10px 12px;   
+        }
+        
+        .info section a
+        {
+            text-decoration: none;
+        }
+        .img img{
+         border: .5px solid transparent;  
+            border-radius: 100px;
+           
+        }
+        
+.social_icon
+        {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding-right: 43px;
+            
+        }
+.social_icon li
+        {
+         list-style: none;
+            
+        }
+      .social_icon li a
+        {
+            font-size: 2.5em;
+            color: white;
+            margin: 20px;
+            display: inline-block;
+            transition: 0.5s;
+            padding-bottom: 0px;
+            
+        }
+    .social_icon li a:hover
+        {
+            transform: translateY(-10px);
+        }
+        footer .star {
+         
+        position: absolute;
+        top: 0;
+        left: 0;
+        width:80%;
+        height:81%;
+        pointer-events: none;
+        animation: animate 8s ease-in-out infinite,
+            backgroundmove 16s linear infinite;
+            justify-content: center;
+            
+        }
+        footer .star.star1
+        {
+         background: url(star1.png); 
+            animation-delay: 0s;
+        }
+        footer .star.star2
+        {
+         background: url(star2.png); 
+            animation-delay: -1s;
+        }
+        footer .star.star3
+        {
+         background: url(star3.png); 
+            animation-delay: -7s;
+        }
+        footer .star.star4
+        {
+         background: url(star4.png); 
+            animation-delay: -3s;
+        }
+        footer .star.star5
+        {
+         background: url(star5.png); 
+            animation-delay: -4s;
+        }
+        footer .star.star6
+        {
+         background: url(star6.png); 
+            animation-delay: -5s;
+        }
+        footer .star.star7
+        {
+         background: url(star7.png); 
+            animation-delay: -6s;
+        }
+        footer .star.star8
+        {
+         background: url(star8.png); 
+            animation-delay: -2s;
+        }
+                
+        @keyframes animate
+        {
+            0% ,20% ,40% ,60% ,80% ,100%
+            {
+                opacity: 0;
+            }
+            10% ,30% ,50% ,70% ,90% 
+            {
+                opacity: 0.5;
+            }
+        }
+        @keyframes  backgroundmove
+        {
+            0%
+            {
+             transform: scale(1);
+            }
+            10%
+            {
+             transform: scale(1.1);
+            }
+            20%
+            {
+             transform: scale(1.2);
+            }
+            30%
+            {
+             transform: scale(1.3);
+            }
+            40%
+            {
+             transform: scale(1.4);
+            }
+            50%
+            {
+             transform: scale(1.5);
+            }
+        }
+    </style>
 </html>
