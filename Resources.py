@@ -1,7 +1,9 @@
-from flask import render_template, make_response
+from flask import render_template, make_response, request, session
 from flask_restful import Resource, reqparse
 import sqlite3
 from profile import Student
+from werkzeug.utils import secure_filename
+import os
 
 
 class Home(Resource):
@@ -15,7 +17,7 @@ class Home(Resource):
         data = {}
         for item in result:
             data[" ".join([item[x] for x in range(2)])] = item[2]
-        usernames = Student.find_username()
+        usernames = Student.find_all_username()
         return make_response(render_template("home.html", data=data, user=usernames))
 
 
@@ -47,21 +49,30 @@ class ReceiveInfo(Resource):
 
     def post(self):
         data = ReceiveInfo.parser.parse_args()
+        # saving picture in pictures folder and path in database
+        image_path = Student.find_picture(data['firstname'])
+        print(image_path)
+
+        uploaded_img = request.files['picture']
+        uploaded_img.save(image_path)
+        session['uploaded_img_file_path'] = image_path
+
+        # saving information in database
         connection = sqlite3.connect("All Information.db")
         cursor = connection.cursor()
-        query = "INSERT INTO {} VALUES(NULL, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(self.TABLE_NAME)
+        query = "INSERT INTO {} VALUES(NULL, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(self.TABLE_NAME)
         cursor.execute(query, (data['firstname'], data['lastname'], data['college'], data['age'], data['gender'],
                                data['religion'], data['number'], data['fb_url'], data['job'],
-                               data['firstname'].lower()))
+                               image_path, data['firstname'].lower()))
         connection.commit()
         connection.close()
-        usernames = Student.find_username()
+        usernames = Student.find_all_username()
         return make_response(render_template("updated.html", name="{} {}".format(data['firstname'], data['lastname'],
                                                                                  data['gender'], data['religion'],
                                                                                  data['job']), user=usernames))
 
     def get(self):
-        usernames = Student.find_username()
+        usernames = Student.find_all_username()
         return make_response(render_template("form.html", user=usernames))
 
 
@@ -101,7 +112,7 @@ class GetInfo(Resource):
 
         connection.commit()
         connection.close()
-        usernames = Student.find_username()
+        usernames = Student.find_all_username()
         return make_response(render_template("showinfo.html", data=info, user=usernames))
 
 
@@ -116,5 +127,7 @@ class Show(Resource):
             info[" ".join([item[x] for x in range(1, 3)])] = [item[a] for a in range(3, len(item)-1)]
         connection.commit()
         connection.close()
-        usernames = Student.find_username()
-        return make_response(render_template("showinfo.html", data=info, user=usernames))
+        usernames = Student.find_all_username()
+        return make_response(render_template("hudai.html", data=info, user=usernames))
+
+

@@ -25,7 +25,7 @@
         </ul>
         </header>
 
-    <form action="{{ url_for("receiveinfo")}}" method="post">
+    <form action="{{ url_for("receiveinfo")}}" method="post" enctype="multipart/form-data">
         <div class="user-details">
             <div class="input-box">
                 <span class="details">
@@ -46,7 +46,7 @@
                  </span></div>
             <div class="input-box">
              <span class="details">
-                 Facebook ID Link: <input type="url" name="fb_url" placeholder="Facebook">
+                 Facebook ID Link: <input required type="url" name="fb_url" placeholder="Facebook">
                 </span></div>
             <div class="input-box">
              <span class="details">
@@ -63,12 +63,11 @@
                 <span class="religion-title">
                      Religion: <input type="checkbox" name="religion" value="Muslim"> Muslim
                     <input type="checkbox" name="religion" value="Others"> Others </span><br><br>
-        <!-- Upload a profile picture: <input type="file" name="picture" accept=".jpg"></div> -->
+                 Upload a Profile Picture: <input required type="file" name="picture" accept=".jpg">
+             </div>
             
-                <div align="center" class="button"><input type="submit" value="Submit"></div>
-        
-
-            </form>
+        <div align="center" class="button"><input type="submit" value="Submit"></div>
+        </form>
 
     </div>
 </body>

@@ -13,5 +13,6 @@ api.add_resource(ReceiveInfo, "/form")
 api.add_resource(GetInfo, "/showinfo")
 api.add_resource(Profile, "/<string:name>")
 api.add_resource(Show, "/show")
+
 if __name__ == '__main__':
     app.run(debug=True)
