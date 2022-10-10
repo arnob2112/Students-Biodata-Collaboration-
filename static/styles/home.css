@@ -10,18 +10,18 @@
 }
 body
 {   margin: 0;
-            padding: 0;
-          overflow-x: hidden;  
-    display:inherit;
-   min-height:100vh;
+     padding: 0;
+    overflow-x:hidden;  
+    display:flex;
+    min-height:100vh;
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background: url('static/backgrounds/home_page.jpg');
-    background-position: center;
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
-
+    
+    
 }
 header
 {
@@ -146,9 +146,11 @@ header ul ul li a.active
 {
     text-align:center;
     color: transparent;
-    
-    
-    position:relative;
+    position: relative;
+     right: 0;
+    left: 0;
+    bottom:0;
+    margin-top:150px;
     
 }
 .banner-text h1
@@ -175,13 +177,15 @@ header ul ul li a.active
 }
 .banner-btn{
     margin: 70px auto 0;
+ 
 }
 
         
 .banner-btn a{
+    
     width: 200px;
     text-decoration: none;
-    display: inline-block;
+    display:inline-block;
     margin: 10px 12px;
     padding: 12px 0;
     background:  #000C5E;
@@ -189,18 +193,19 @@ header ul ul li a.active
     border: .5px solid white;
     border-radius: 100px;
      transition: color 0.5s ;
-    position: relative;
+    position:relative;
     z-index: 1;
     font-family:monospace;
     font-size: 1em;
-    font-weight: 600;
+    font-weight: 900;
+   
     
         
 }
         .banner-btn a span{
             width:0;
             height: 100%;
-            position: absolute;
+            position:absolute;
             top: 0;
             left: 0;
             background: white;
@@ -230,12 +235,16 @@ header ul ul li a.active
      padding: 3px;
      background-color:transparent;
      color: white;
-     pi       position: relative;
-    
+     position: absolute;
+     right: 0;
+    left: 0;
+    bottom:0;
+    margin-bottom:75px;
+            
         }
 section a h2{
    
-   
+    
     width: 200px;
     text-decoration: none;
     display: inline-block;
@@ -259,17 +268,21 @@ section a h2{
         }
        .social_icon
         {   
-            position: relative;
+            position:absolute;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             padding-right: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            
             
         }
 .social_icon li
         {
          list-style: none;
-            position: relative;
+            position:relative;
             
         }
       .social_icon li a
@@ -300,48 +313,7 @@ section a h2{
         
             justify-content: center;
             
-        }
-        footer .star.star1
-        {
-         background: url('static/backgrounds/star1.png');
-            animation-delay: 0s;
-            
-        }
-        footer .star.star2
-        {
-         background: url('static/backgrounds/star2.png');
-            animation-delay: -1s;
-        }
-        footer .star.star3
-        {
-         background: url('static/backgrounds/star3.png');
-            animation-delay: -2s;
-        }
-        footer .star.star4
-        {
-         background: url('static/backgrounds/star4.png');
-            animation-delay: -3s;;
-        }
-        footer .star.star5
-        {
-         background: url('static/backgrounds/star5.png');
-            animation-delay: 4s;
-        }
-        footer .star.star6
-        {
-         background: url('static/backgrounds/star6.png');
-            animation-delay: -5s;
-        }
-        footer .star.star7
-        {
-         background: url('static/backgrounds/star7.png');
-            animation-delay: -6s;
-        }
-        footer .star.star8
-        {
-         background: url('static/backgrounds/star8.png');
-            animation-delay: -7s;
-        }
+}
                 
         @keyframes animate
         {
@@ -378,34 +350,34 @@ section a h2{
             }
             50%
             {
-             transform: scale(.8);
+             transform: scale(.9);
             }
             60%
             {
-             transform: scale(.9);
+             transform: scale(1);
             }
             70%
             {
-             transform: scale(1);
+             transform: scale(.9);
             }
             80%
             {
-             transform: scale(.9);
+             transform: scale(.8);
             }
             90%
             {
-             transform: scale(.85);
+             transform: scale(.9);
             }
             100%
             {
              transform: scale(.8);
             }
         }
-    
+
         .line
         {
          position: relative;
-        justify-content: center;
-            display: flex;
+        display:flex;
+            justify-content: center;
             
         }
