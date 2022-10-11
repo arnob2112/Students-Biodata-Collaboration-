@@ -24,6 +24,7 @@ class Home(Resource):
 class ReceiveInfo(Resource):
     TABLE_NAME = 'people'
 
+
     parser = reqparse.RequestParser()
     parser.add_argument('firstname',
                         type=str,
@@ -48,7 +49,7 @@ class ReceiveInfo(Resource):
     parser.add_argument('fb_url')
 
     def post(self):
-        data = ReceiveInfo.parser.parse_args()
+        data = dict(request.form.items())
         # saving picture in pictures folder and path in database
         image_path = Student.find_picture(data['firstname'])
         print(image_path)
