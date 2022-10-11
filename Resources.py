@@ -24,30 +24,6 @@ class Home(Resource):
 class ReceiveInfo(Resource):
     TABLE_NAME = 'people'
 
-
-    parser = reqparse.RequestParser()
-    parser.add_argument('firstname',
-                        type=str,
-                        help="This field cannot be left blank!"
-                        )
-    parser.add_argument('lastname',
-                        type=str,
-                        help="This field cannot be left blank!"
-                        )
-    parser.add_argument('gender',
-                        type=str)
-    parser.add_argument('religion',
-                        type=str)
-    parser.add_argument('job',
-                        type=str)
-    parser.add_argument('college',
-                        type=str)
-    parser.add_argument('age',
-                        type=str)
-    parser.add_argument('number',
-                        type=str)
-    parser.add_argument('fb_url')
-
     def post(self):
         data = dict(request.form.items())
         # saving picture in pictures folder and path in database
