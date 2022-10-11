@@ -26,13 +26,6 @@ class ReceiveInfo(Resource):
 
     def post(self):
         data = dict(request.form.items())
-        # saving picture in pictures folder and path in database
-        image_path = Student.find_picture(data['firstname'])
-        print(image_path)
-
-        uploaded_img = request.files['picture']
-        uploaded_img.save(image_path)
-        session['uploaded_img_file_path'] = image_path
 
         # saving information in database
         connection = sqlite3.connect("All Information.db")
@@ -40,9 +33,19 @@ class ReceiveInfo(Resource):
         query = "INSERT INTO {} VALUES(NULL, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(self.TABLE_NAME)
         cursor.execute(query, (data['firstname'], data['lastname'], data['college'], data['age'], data['gender'],
                                data['religion'], data['number'], data['fb_url'], data['job'],
-                               image_path, data['firstname'].lower()))
+                               None, data['firstname'].lower()))
+        connection.commit()
+        # saving picture in pictures folder and path in database
+        image_path = Student.find_picture(data['firstname'])
+        uploaded_img = request.files['picture']
+        uploaded_img.save(image_path)
+        session['uploaded_img_file_path'] = image_path
+
+        update_query = "UPDATE {} SET Image_Path = ? WHERE FirstName = ?".format(self.TABLE_NAME)
+        cursor.execute(update_query, (image_path, data['firstname']))
         connection.commit()
         connection.close()
+
         usernames = Student.find_all_username()
         return make_response(render_template("updated.html", name="{} {}".format(data['firstname'], data['lastname'],
                                                                                  data['gender'], data['religion'],
