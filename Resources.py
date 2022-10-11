@@ -79,29 +79,20 @@ class ReceiveInfo(Resource):
 class GetInfo(Resource):
     TABLE_NAME = "user"
 
-    parser = reqparse.RequestParser()
-    parser.add_argument("username",
-                        type=str,
-                        required=True,
-                        help="Username can't be blank.")
-    parser.add_argument("password",
-                        type=str,
-                        required=True,
-                        help="Password can't left blank.")
-
     def get(self):
         return make_response(render_template("login.html"))
 
     def post(self):
-        data = GetInfo.parser.parse_args()
+        username = request.form['username']
+        password = request.form['password']
         connection = sqlite3.connect("All Information.db")
         cursor = connection.cursor()
-        result = cursor.execute("SELECT * FROM user WHERE username=?", (data['username'],)).fetchone()
+        result = cursor.execute("SELECT * FROM user WHERE username=?", (username,)).fetchone()
         if result:
             user = result
         else:
             user = None
-        if user[1] == data['password']:
+        if user[1] == password:
             query = "SELECT * FROM people"
             data = list(cursor.execute(query))
             info = {}
