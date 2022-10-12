@@ -1,74 +1,128 @@
 <html>
 <head> <title> Registration - Gruuvity </title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/form.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
-    <div class="container">
-        <div class="title">
-    REGISTRATION
-        </div>
-<header>
-       <a href="{{url_for("home")}}" class="logo">STUDENT'S BIODATA</a>
-    <ul type=circle>
-        <li> <a href="{{url_for("home")}}" class="active">HOME</a></li>
-        <li> <a>PROFILE</a>
+
+    
+    
+    <header>
+        <a href="{{url_for("home")}}" class="logo"><img src="static/backgrounds/logo2.png" height="100px" width="350px;"></a>
+        
+         <ul type=circle>
+    <li> <a href="{{url_for("home")}}" class="active"><i class="fa fa-fw fa-home"></i>HOME</a></li>
+        <li> <a><i class="fa fa-fw fa-user"></i>PROFILE</a>
         <ul>
-            <li>
+        <li>
             {% for name, username in user %}
               <a href="{{username}}"> {{name}} </a> <br>
             {% endfor %}
             </li>
-             </ul>
-        </li>
-        <li> <a href="#">CONTACT</a></li>
-        <li> <a href="#">ABOUT US</a></li>
+            </ul>
+        <li> <a href="#"><i class="fa fa-fw fa-envelope"></i>CONTACT</a></li>
+        <li> <a href="#"><i class="fa fa-fw fa-info"></i>ABOUT US</a></li>
         </ul>
         </header>
-
+        
+        
+ <div class="container">
+        <div class="title">
+    REGISTRATION
+        </div>
     <form action="{{ url_for("receiveinfo")}}" method="post" enctype="multipart/form-data">
         <div class="user-details">
             <div class="input-box">
                 <span class="details">
                       
-                    First Name:<input required type="text" name="firstname" placeholder="First Name"></span></div>
+                    <input required type="text" name="firstname" placeholder="First Name"></span></div>
              <div class="input-box">
                 <span class="details">
-                    Last Name: <input required type="text" name="lastname" placeholder="Last Name"> </span></div>
+                    <input required type="text" name="lastname" placeholder="Last Name"> </span></div>
              <div class="input-box">
                 <span class="details">
-                    College: <input type="text" name="college" placeholder="College"></span></div>
+                    <input type="text" name="college" placeholder="College"></span></div>
              <div class="input-box">
                 <span class="details">
-                    Age: <input required type="number" name="age" placeholder="Age"></span></div>
+                    <input required type="number" name="age" placeholder="Age"></span></div>
              <div class="input-box">
              <span class="details">
-                 Contact Number: <input required type="text" name="number" placeholder="Contact Number">
+                 <input required type="text" name="number" placeholder="Contact Number">
                  </span></div>
             <div class="input-box">
              <span class="details">
-                 Facebook ID Link: <input required type="url" name="fb_url" placeholder="Facebook">
+                 <input required type="url" name="fb_url" placeholder="Facebook">
                 </span></div>
             <div class="input-box">
-             <span class="details">
-                 Select Job: <select required name="job">
-                    <option> Student </option>
-                    <option> Teacher </option>
+             <span class="details">Select Job: <select required name="job">
+                    <option> STUDENT </option>
+                    <option> TEACHER </option>
                  </select></span></div></div>
-            
-                 <div class="gender-details">
+             <div class="gender-details">
                 <span class="gender-title">
                 Gender: <input required type="radio" name="gender" value="Male"> Male <input type="radio" name="gender" value="Female"> Female</span></div><br>
             
              <div class="religion-details">
                 <span class="religion-title">
-                     Religion: <input type="checkbox" name="religion" value="Muslim"> Muslim
-                    <input type="checkbox" name="religion" value="Hindu"> Hindu <input type="checkbox" name="religion" value="Others"> Others </span><br><br>
-                 Upload a Profile Picture: <input required type="file" name="picture" accept=".jpg">
-             </div>
+                     Religion:  <input type="checkbox" name="religion" value="Muslim"> Muslim
+                    <input type="checkbox" name="religion" value="Hindu"> Hindu
+                    <input type="checkbox" name="religion" value="Others"> Others <br><br>
+                 Upload a Profile Picture: <input required type="file" name="picture" accept=".jpg"></span>
+        </div>
             
         <div align="center" class="button"><input type="submit" value="Submit"></div>
-        </form>
+     </form></div> 
+    <footer>
+        <div class="star star1"></div>
+        <div class="star star2"></div>
+        <div class="star star3"></div>
+        <div class="star star4"></div>
+        <div class="star star5"></div>
+        <div class="star star6"></div>
+        <div class="star star7"></div>
+        <div class="star star8"></div>
+    </footer>
+        <style>
+            
+        body{
+        background-image: url('static/backgrounds/form_page.jpg');
+        }
+                footer .star.star1
+        {
+         background: url('static/backgrounds/star1.png');
+            animation-delay: 0s;
 
-    </div>
-</body>
-</html>
+        }
+        footer .star.star2
+        {
+         background: url('static/backgrounds/star2.png');
+            animation-delay: -1s;
+        }
+        footer .star.star3
+        {
+         background: url('static/backgrounds/star3.png');
+            animation-delay: -2s;
+        }
+        footer .star.star4
+        {
+         background: url('static/backgrounds/star4.png');
+            animation-delay: -3s;;
+        }
+        footer .star.star5
+        {
+         background: url('static/backgrounds/star5.png');
+            animation-delay: -4s;
+        }
+        footer .star.star6
+        {
+         background: url('static/backgrounds/star6.png');
+            animation-delay: -5s;
+        }
+        footer .star.star7
+        {
+         background: url('static/backgrounds/star7.png');
+            animation-delay: -6s;
+        }
+            
+    </style></body></head></html>
+    
