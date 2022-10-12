@@ -13,8 +13,8 @@
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-            {% for key, value in user.items() %}
-              <a href="{{value}}"> {{key}} </a>
+            {% for name, username in user %}
+              <a href="{{username}}"> {{name}} </a> <br>
             {% endfor %}
         </div>
       </div>

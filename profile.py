@@ -3,14 +3,16 @@ from flask_restful import Resource
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
+import random
 
 
 class Student:
     def __init__(self, firstname):
         self.firstname = firstname
 
-    @classmethod
-    def find_by_firstname(cls, name):
+    @staticmethod
+    def find_by_username(name):
+        print(name)
         connection = sqlite3.connect("All Information.db")
         cursor = connection.cursor()
         query = "SELECT * FROM people WHERE Username=?"
@@ -19,6 +21,7 @@ class Student:
         connection.commit()
         connection.close()
         if row:
+            print(row)
             return list(row)  # returning all information of a student in list
         else:
             return None
@@ -39,10 +42,10 @@ class Student:
         users = list(cursor.execute("SELECT FirstName, LastName, Username FROM people ").fetchall())
         connection.commit()
         connection.close()
-        usernames = {}
+        usernames = []
         for user in users:
-            usernames[" ".join([user[x] for x in range(2)])] = user[2]
-        return usernames  # returning all usernames in dictionary -> {FirstName + LastName: Username}
+            usernames.append(tuple([" ".join(user[x] for x in range(2)), user[2]]))
+        return usernames  # returning all usernames in list of tuples -> (FirstName + LastName, Username)
 
     @staticmethod
     def find_username(firstname):
@@ -54,8 +57,19 @@ class Student:
         return username  # returning username in tuple -> (username, )
 
     @staticmethod
-    def find_picture(firstname):
-        username = Student.find_username(firstname)[0]
+    def generate_username(firstname):
+        usernames = [user[1] for user in Student.find_all_username()]
+        unique_username = firstname.lower()
+        while True:
+            if unique_username not in usernames:
+                print("username", unique_username)
+                return unique_username
+            else:
+                random_number = random.randint(0, 100)
+                unique_username = unique_username + str(random_number)
+
+    @staticmethod
+    def find_picture(username):
         upload_folder = os.path.join('static', 'pictures')
         img_filename = secure_filename(username + ".jpg")
         image_path = os.path.join(upload_folder, img_filename)
@@ -64,11 +78,13 @@ class Student:
 
 class Profile(Resource):
     def get(self, name):
-        student = Student.find_by_firstname(name)
+        student = Student.find_by_username(name)
         if student:
             data = {" ".join([student[x] for x in range(1, 3)]): [student[x] for x in range(3, len(student) - 1)]}
             usernames = Student.find_all_username()
+            print(data)
+            print(usernames)
             return make_response(render_template("profile.html", data=data, user=usernames))
-            # a single page of an student which incluids all information
+            # a single page of an student which includes all information
         else:
             return None

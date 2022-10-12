@@ -26,6 +26,7 @@ class ReceiveInfo(Resource):
 
     def post(self):
         data = dict(request.form.items())
+        username = Student.generate_username(data['firstname'])
 
         # saving information in database
         connection = sqlite3.connect("All Information.db")
@@ -33,16 +34,16 @@ class ReceiveInfo(Resource):
         query = "INSERT INTO {} VALUES(NULL, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(self.TABLE_NAME)
         cursor.execute(query, (data['firstname'], data['lastname'], data['college'], data['age'], data['gender'],
                                data['religion'], data['number'], data['fb_url'], data['job'],
-                               None, data['firstname'].lower()))
+                               None, username))
         connection.commit()
         # saving picture in pictures folder and path in database
-        image_path = Student.find_picture(data['firstname'])
+        image_path = Student.find_picture(username)
         uploaded_img = request.files['picture']
         uploaded_img.save(image_path)
         session['uploaded_img_file_path'] = image_path
 
-        update_query = "UPDATE {} SET Image_Path = ? WHERE FirstName = ?".format(self.TABLE_NAME)
-        cursor.execute(update_query, (image_path, data['firstname']))
+        update_query = "UPDATE {} SET Image_Path = ? WHERE Username = ?".format(self.TABLE_NAME)
+        cursor.execute(update_query, (image_path, username))
         connection.commit()
         connection.close()
 

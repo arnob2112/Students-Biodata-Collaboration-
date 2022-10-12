@@ -18,8 +18,8 @@
         <li> <a class="active"><i class="fa fa-fw fa-user"></i>PROFILE</a>
         <ul>
             <li>
-            {% for key, value in user.items() %}
-              <a href="{{value}}"> {{key}} </a> <br>
+            {% for name, username in user %}
+              <a href="{{username}}"> {{name}} </a> <br>
             {% endfor %}
             </li>
              </ul>
