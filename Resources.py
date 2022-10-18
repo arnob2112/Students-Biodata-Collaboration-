@@ -2,6 +2,7 @@ from flask import render_template, make_response, request, session
 from flask_restful import Resource, reqparse
 import sqlite3
 from profile import Student
+import requests
 from werkzeug.utils import secure_filename
 import os
 
@@ -24,37 +25,108 @@ class Home(Resource):
 class ReceiveInfo(Resource):
     TABLE_NAME = 'people'
 
+    def get(self):
+        print("get")
+        usernames = Student.find_all_username()
+        return make_response(render_template("form.html", user=usernames))
+
     def post(self):
         data = dict(request.form.items())
-        username = Student.generate_username(data['firstname'])
 
-        # saving information in database
+        # initializing put method
+        if data['work'] == 'Update':
+            info = Student.find_by_username(data['username'])
+            usernames = Student.find_all_username()
+            return make_response(render_template("update_form.html", data=info, user=usernames))
+
+        elif data['work'] == 'init update':
+            if request.files['picture']:
+                data['picture'] = True
+            else:
+                data['picture'] = False
+
+            requests.put(request.url, params=data, files={'picture': request.files['picture']})
+
+            all_persons = Student.get_all_persons()
+            teacher, students = Student.divide(all_persons)
+            usernames = Student.find_all_username()
+
+            return make_response(
+                render_template("showinfo.html", teacher=teacher, students=students, data=all_persons, user=usernames,
+                                message="{} {} has updated.".format(data['firstname'], data['lastname'])))
+
+        # initializing delete method
+        elif data["work"] == 'Delete':
+            print(data['username'])
+            name = Student.find_name_by_username(data['username'])
+            print(name)
+            requests.delete(request.url, params=data)
+
+            all_persons = Student.get_all_persons()
+            teacher, students = Student.divide(all_persons)
+            usernames = Student.find_all_username()
+            return make_response(
+                render_template("showinfo.html", teacher=teacher, students=students, data=all_persons, user=usernames,
+                                message="{} has deleted.".format(name)))
+
+        else:
+            username = Student.generate_username(data['firstname'])
+
+            # saving information in database
+            connection = sqlite3.connect("All Information.db")
+            cursor = connection.cursor()
+            query = "INSERT INTO {} VALUES(NULL, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(self.TABLE_NAME)
+            cursor.execute(query, (data['firstname'], data['lastname'], data['college'], data['age'], data['gender'],
+                                   data['religion'], data['number'], data['fb_url'], data['job'],
+                                   None, username))
+            connection.commit()
+            # saving picture in pictures folder and path in database
+            image_path = Student.find_picture(username)
+            uploaded_img = request.files['picture']
+            uploaded_img.save(image_path)
+            session['uploaded_img_file_path'] = image_path
+
+            update_query = "UPDATE {} SET Image_Path = ? WHERE Username = ?".format(self.TABLE_NAME)
+            cursor.execute(update_query, (image_path, username))
+            connection.commit()
+            connection.close()
+
+            usernames = Student.find_all_username()
+            return make_response(render_template("uploaded.html", name="{} {}".format(data['firstname'],
+                                                                                      data['lastname'],
+                                                                                      user=usernames)))
+
+    def put(self):
+        data = dict(request.args)
+
+        if data['picture'] == "True":
+            image_path = Student.find_picture(data['username'])
+            uploaded_img = request.files['picture']
+            uploaded_img.save(image_path)
+            session['uploaded_img_file_path'] = image_path
+
         connection = sqlite3.connect("All Information.db")
         cursor = connection.cursor()
-        query = "INSERT INTO {} VALUES(NULL, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(self.TABLE_NAME)
-        cursor.execute(query, (data['firstname'], data['lastname'], data['college'], data['age'], data['gender'],
-                               data['religion'], data['number'], data['fb_url'], data['job'],
-                               None, username))
+        update_query = "UPDATE {} SET Firstname=?, LastName=?, College=?, Age=?, Gender=?, Religion=?," \
+                       "Contact_Number=?, FB_URL=?, Job=? WHERE Username=?".format(self.TABLE_NAME)
+        cursor.execute(update_query, (data['firstname'], data['lastname'], data['college'], data['age'], data['gender'],
+                                      data['religion'], data['number'], data['fb_url'], data['job'], data['username']))
         connection.commit()
-        # saving picture in pictures folder and path in database
-        image_path = Student.find_picture(username)
-        uploaded_img = request.files['picture']
-        uploaded_img.save(image_path)
-        session['uploaded_img_file_path'] = image_path
+        connection.close()
+        return None
 
-        update_query = "UPDATE {} SET Image_Path = ? WHERE Username = ?".format(self.TABLE_NAME)
-        cursor.execute(update_query, (image_path, username))
+    def delete(self):
+        data = dict(request.args)
+
+        connection = sqlite3.connect("All Information.db")
+        cursor = connection.cursor()
+        delete_query = "DELETE FROM {} WHERE Username=?".format(self.TABLE_NAME)
+        cursor.execute(delete_query, (data['username'],))
         connection.commit()
         connection.close()
 
-        usernames = Student.find_all_username()
-        return make_response(render_template("updated.html", name="{} {}".format(data['firstname'], data['lastname'],
-                                                                                 data['gender'], data['religion'],
-                                                                                 data['job']), user=usernames))
-
-    def get(self):
-        usernames = Student.find_all_username()
-        return make_response(render_template("form.html", user=usernames))
+        os.remove(Student.find_picture(data['username']))
+        return None
 
 
 class GetInfo(Resource):
@@ -66,6 +138,7 @@ class GetInfo(Resource):
     def post(self):
         username = request.form['username']
         password = request.form['password']
+
         connection = sqlite3.connect("All Information.db")
         cursor = connection.cursor()
         result = cursor.execute("SELECT * FROM user WHERE username=?", (username,)).fetchone()
@@ -74,32 +147,30 @@ class GetInfo(Resource):
         else:
             user = None
         if user[1] == password:
-            query = "SELECT * FROM people"
-            data = list(cursor.execute(query))
-            info = {}
-            for item in data:
-                info[" ".join([item[x] for x in range(1, 3)])] = [item[a] for a in range(3, len(item)-1)]
+            all_persons = Student.get_all_persons()
         else:
             return {"message": "You have entered wrong password."}
-
         connection.commit()
         connection.close()
+
+        teacher, students = Student.divide(all_persons)
         usernames = Student.find_all_username()
-        return make_response(render_template("showinfo.html", data=info, user=usernames))
+
+        return make_response(
+            render_template("showinfo.html", teacher=teacher, students=students, data=all_persons, user=usernames))
+
+    def put(self):
+        print("in the put method, getinfo")
+        print(request.method)
 
 
 class Show(Resource):
+
     def get(self):
-        connection = sqlite3.connect("All Information.db")
-        cursor = connection.cursor()
-        query = "SELECT * FROM people"
-        data = list(cursor.execute(query))
-        info = {}
-        for item in data:
-            info[" ".join([item[x] for x in range(1, 3)])] = [item[a] for a in range(3, len(item)-1)]
-        connection.commit()
-        connection.close()
+        all_persons = Student.get_all_persons()
+        teacher, students = Student.divide(all_persons)
         usernames = Student.find_all_username()
-        return make_response(render_template("showinfo.html", data=info, user=usernames))
-
-
+        print(teacher)
+        print(students)
+        return make_response(
+            render_template("showinfo.html", teacher=teacher, students=students, data=all_persons, user=usernames))

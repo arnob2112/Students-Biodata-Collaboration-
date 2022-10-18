@@ -12,7 +12,6 @@ class Student:
 
     @staticmethod
     def find_by_username(name):
-        print(name)
         connection = sqlite3.connect("All Information.db")
         cursor = connection.cursor()
         query = "SELECT * FROM people WHERE Username=?"
@@ -21,8 +20,7 @@ class Student:
         connection.commit()
         connection.close()
         if row:
-            print(row)
-            return list(row)  # returning all information of a student in list
+            return row  # returning all information of a student in list
         else:
             return None
 
@@ -74,6 +72,61 @@ class Student:
         img_filename = secure_filename(username + ".jpg")
         image_path = os.path.join(upload_folder, img_filename)
         return image_path  # creating picture path using firstname -> static\pictures\firstname.jpg
+
+    @staticmethod
+    def get_all_persons():
+        connection = sqlite3.connect("All Information.db")
+        cursor = connection.cursor()
+        query = "SELECT * FROM people"
+        all_data = list(cursor.execute(query))
+        connection.commit()
+        connection.close()
+        return all_data
+
+    @staticmethod
+    def find_name_by_username(username):
+        connection = sqlite3.connect("All Information.db")
+        cursor = connection.cursor()
+        query = "SELECT FirstName, Lastname FROM people WHERE Username=?"
+        test = cursor.execute(query, (username, )).fetchone()
+        print(test)
+        name = " ".join(cursor.execute(query, (username, )).fetchone())
+        return name
+
+    @staticmethod
+    def divide_in_there(persons):
+        teacher = persons[0]
+        persons.pop(0)
+        students = []
+        extra = len(persons) % 3
+        if extra:
+            for a in range(0, len(persons) - extra, 3):
+                groups = []
+                for b in range(3):
+                    groups.append(persons[0])
+                    persons.pop(0)
+                students.append(tuple(groups))
+            extra_group = []
+            while persons:
+                extra_group.append(persons[0])
+                persons.pop(0)
+            students.append(tuple(extra_group))
+
+        else:
+            for a in range(0, len(persons), 3):
+                groups = []
+                for b in range(3):
+                    groups.append(persons[0])
+                    persons.pop(0)
+                students.append(tuple(groups))
+        return teacher, students
+
+    @staticmethod
+    def divide(persons):
+        teacher = persons[0]
+        persons.pop(0)
+        students = tuple(persons)
+        return teacher, students
 
 
 class Profile(Resource):

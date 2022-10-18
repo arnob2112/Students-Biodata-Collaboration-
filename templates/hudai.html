@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Show Info</title>
+    <title>Show Info - Gruuvity </title>
     <style>
         img {
             border-radius: 50%;
@@ -10,20 +10,26 @@
     </style>
 </head>
 <body bgcolor="ADDDD0">
+    <h3 align="center"> {{ message }} </h3>
 <table border="0" align="center" width="800" cellspacing="20">
   <tbody>
-  {% for key, value in data.items() %}
+  {% for person in data %}
    <tr>
        <td colspan="20" rowspan="10" align="center">
-       <img src="{{value[7]}}" alt="picture" width="150" height="150" align="center" ><br>
-           <h3>{{ key }}</h3>
-           <b> College: </b> {{value[0]}} <br>
-           <b> Age: </b> {{value[1]}} <br>
-           <b> Gender: </b> {{value[2]}} <br>
-           <b> Religion: </b> {{value[3]}} <br>
-           <b> Contact Number: </b> {{value[4]}} <br>
-           <b> Job: </b> {{value[6]}} <br>
-            <a href="{{value[5]}}" target="_blank"> Facebook </a> <br>
+       <img src="{{person[10]}}" alt="picture" width="150" height="150" align="center" ><br>
+           <h3>{{person[1]}} {{person[2]}}</h3>
+           <b> College: </b> {{person[3]}} <br>
+           <b> Age: </b> {{person[4]}} <br>
+           <b> Gender: </b> {{person[5]}} <br>
+           <b> Religion: </b> {{person[6]}} <br>
+           <b> Contact Number: </b> {{person[7]}} <br>
+           <b> Job: </b> {{person[9]}} <br>
+            <a href="{{person[8]}}" target="_blank"> Facebook </a> <br><br>
+       <form action="{{url_for("receiveinfo")}}" method="POST">
+                <input type="hidden" name="username" value="{{person[11]}}">
+                <input type="submit" name="work" value="Update"> <br>
+                <input type="submit" name="work" value="Delete">
+           </form>
 	   </td>
    </tr>
   {% endfor %}
