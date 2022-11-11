@@ -1,31 +1,12 @@
-<html>
-<head> <title> Registration - Gruuvity </title>
+{% extends "base.html" %}
+
+
+{% block content %}
+<head> {% block title %} <title> Registration - Gruuvity </title> {% endblock %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/form.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <body>
-
-    
-    
-    <header>
-        <a href="{{url_for("home")}}" class="logo"><img src="static/backgrounds/logo2.png" height="100px" width="350px;"></a>
-        
-         <ul type=circle>
-    <li> <a href="{{url_for("home")}}" class="active"><i class="fa fa-fw fa-home"></i>HOME</a></li>
-        <li> <a><i class="fa fa-fw fa-user"></i>PROFILE</a>
-        <ul>
-        <li>
-            {% for name, username in user %}
-              <a href="{{username}}"> {{name}} </a> <br>
-            {% endfor %}
-            </li>
-            </ul>
-        <li> <a href="#"><i class="fa fa-fw fa-envelope"></i>CONTACT</a></li>
-        <li> <a href="#"><i class="fa fa-fw fa-info"></i>ABOUT US</a></li>
-        </ul>
-        </header>
-        
-        
  <div class="container">
         <div class="title">
     REGISTRATION
@@ -53,8 +34,14 @@
              <span class="details">
                  <input required type="url" name="fb_url" placeholder="Facebook">
                 </span></div>
+            {% if not current_user.is_authenticated %}
             <div class="input-box">
-             <span class="details">Select Job: <select required name="job">
+                <span class="details">
+                    Teacher's Username <input required type="text" name="teacher_username">
+                </span></div>
+            {% endif %}
+            <div class="input-box">
+             <span class="details"> Select Job: <select required name="job">
                     <option> Student </option>
                     <option> Teacher </option>
                  </select></span></div></div>
@@ -85,7 +72,7 @@
         <div class="star star8"></div>
     </footer>
         <style>
-            
+
         body{
         background-image: url('static/backgrounds/form_page.jpg');
         }
@@ -126,5 +113,6 @@
             animation-delay: -6s;
         }
             
-    </style></body></head></html>
+    </style></body></head>
+{% endblock %}
     

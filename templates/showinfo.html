@@ -1,100 +1,37 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+
+
+{% block content %}
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Float four columns side by side */
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 10px 10px;
-}
-
-/* Remove extra left and right margins, due to padding */
-.row {margin: 0 -5px;}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive columns */
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
-}
-
-/* Style the counter cards */
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px;
-  text-align: center;
-  background-color: #f1f1f1;
-}
-img {
-    border-radius: 50%;
-    }
-
-</style>
+    {% block title %} <title> Students Information - Student's Biodata </title> {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/showinfo.css') }}">
 </head>
 <body bgcolor="#256D85">
-<!-- for teacher row -->
-<div class="row">
-  <div class="column">
-    <div class="card">
-           <img src="{{teacher[10]}}" alt="picture" width="150" height="150" align="center" ><br>
-           <h3>{{teacher[1]}} {{teacher[2]}}</h3>
-           <b> College: </b> {{teacher[3]}} <br>
-           <b> Age: </b> {{teacher[4]}} <br>
-           <b> Gender: </b> {{teacher[5]}} <br>
-           <b> Religion: </b> {{teacher[6]}} <br>
-           <b> Contact Number: </b> {{teacher[7]}} <br>
-           <b> Job: </b> {{teacher[9]}} <br>
-            <a href="{{teacher[8]}}" target="_blank"> Facebook </a> <br><br>
-       <form action="{{url_for("receiveinfo")}}" method="POST">
-                <input type="hidden" name="username" value="{{teacher[11]}}">
-                <input type="submit" style="margin-right: 10px" name="work" value="Update">
-                <input type="submit" name="work" value="Delete">
-           </form>
+    <!--for students row-->
+    {% for student in students %}
+    <div class="row">
+      <div class="column">
+        <div class="card">
+               <img src="{{student[9]}}" alt="picture" width="150" height="150" align="center" ><br>
+               <h3>{{student[0]}} {{student[1]}}</h3>
+               <b> College: </b> {{student[2]}} <br>
+               <b> Age: </b> {{student[3]}} <br>
+               <b> Gender: </b> {{student[4]}} <br>
+               <b> Religion: </b> {{student[5]}} <br>
+               <b> Contact Number: </b> {{student[6]}} <br>
+               <b> Job: </b> {{student[8]}} <br>
+                <a href="{{student[7]}}" target="_blank"> Facebook </a> <br><br>
+           <form action="{{url_for("receiveinfo")}}" method="POST">
+                    <input type="hidden" name="username" value="{{student[10]}}">
+                    <input type="hidden" name="job" value="{{student[8]}}">
+                    <input type="submit" style="margin-right: 10px" name="work" value="Update">
+                    <input type="submit" name="work" value="Delete">
+               </form>
+        </div>
+      </div>
+    {% endfor %}
     </div>
-  </div>
-</div>
-<!--for students row-->
-<div class="row">
-{% for person in students %}
-  <div class="column">
-    <div class="card">
-           <img src="{{person[10]}}" alt="picture" width="150" height="150" align="center" ><br>
-           <h3>{{person[1]}} {{person[2]}}</h3>
-           <b> College: </b> {{person[3]}} <br>
-           <b> Age: </b> {{person[4]}} <br>
-           <b> Gender: </b> {{person[5]}} <br>
-           <b> Religion: </b> {{person[6]}} <br>
-           <b> Contact Number: </b> {{person[7]}} <br>
-           <b> Job: </b> {{person[9]}} <br>
-            <a href="{{person[8]}}" target="_blank"> Facebook </a> <br><br>
-       <form action="{{url_for("receiveinfo")}}" method="POST">
-                <input type="hidden" name="username" value="{{person[11]}}">
-                <input type="submit" style="margin-right: 10px" name="work" value="Update">
-                <input type="submit" name="work" value="Delete">
-           </form>
-    </div>
-  </div>
-{% endfor %}
-</div>
 
 </body>
-</html>
+{% endblock %}

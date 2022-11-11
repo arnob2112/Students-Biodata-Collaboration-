@@ -4,15 +4,15 @@
 {% block content %}
 <head>
     <meta charset="UTF-8">
-    {% block title %} <title> Log in - Gruuvity </title> {% endblock %}
+    {% block title %} <title> Sign Up - Gruuvity </title> {% endblock %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/login.css') }}">
 </head>
 
 <body>
     <div class="center">
-<h1 align="center"> Log In </h1>
+<h1 align="center"> Sign Up </h1>
 
-<form align="left" action="{{url_for("login")}}" method="post" enctype="multipart/form-data" >
+<form align="left" action="{{url_for("signup")}}" method="post" enctype="multipart/form-data" >
     <div class="txt_field">
     {% for message in get_flashed_messages() %}
         {{ message }} <br> <br>
@@ -22,10 +22,9 @@
     <label> Username: </label>
     </div>
    <div class="txt_field">
-       <input type="password" name="password" required>
+       <input type="text" name="password" required>
        <span></span>
        <label>Password:</label></div>
-    <input type="checkbox" name="remember"> Remember Me <br><br>
     <div align="center">
     <input type="submit" value="Submit">
     </div>

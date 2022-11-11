@@ -1,6 +1,8 @@
-<!doctype html>
+{% extends "base.html" %}
 
-<html>
+
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <title> Profile - Gruuvity </title>
@@ -8,28 +10,9 @@
 
 </head>
 <body align="center">
-
-    <header>
-       <a href="{{url_for("home")}}" class="logo">STUDENT'S BIODATA</a>
-    <ul type=circle>
-        
-        
-        <li> <a href="{{url_for("home")}}" ><i class="fa fa-fw fa-home"></i>HOME</a></li>
-        <li> <a class="active"><i class="fa fa-fw fa-user"></i>PROFILE</a>
-        <ul>
-            <li>
-            {% for name, username in user %}
-              <a href="{{username}}"> {{name}} </a> <br>
-            {% endfor %}
-            </li>
-             </ul>
-        </li>
-        <li> <a href="#"><i class="fa fa-fw fa-envelope"></i>CONTACT</a></li>
-        <li> <a href="#"><i class="fa fa-fw fa-info"></i>ABOUT US</a></li>
-        </ul>
-        </header><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br>
     {% for key, value in data.items() %}
-    <div class="img"> <img src="{{value[7]}}" alt="picture" height="200px" width="200px"> </div> <br><br><br>
+    <div class="img"> <img src="{{url_for("home")}}{{value[7]}}" alt="picture" height="200px" width="200px"> </div> <br><br><br>
     <div class="info" >
         <h2> {{key}} </h2> <br><br>
         <section>
@@ -39,7 +22,6 @@
             <b><a class="link" href="tel:{{value[4]}}" > Contact Number </a></b>: {{value[4]}} <br>
             <b> College </b>: {{value[0]}} <br>
             <b> Job </b>: {{value[6]}} <br>
-                <!-- <a href="{{value[5]}}" > Facebook </a> <br> -->
         </section>
     </div>
     <ul class="social_icon">
@@ -404,4 +386,4 @@ header ul ul li a.active
   font-weight:bold;
 }
     </style>
-</html>
+{% endblock %}
