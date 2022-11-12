@@ -1,8 +1,7 @@
-import sqlite3
-import os
-from werkzeug.utils import secure_filename
 from flask_login import current_user
+from werkzeug.utils import secure_filename
 import random
+import os
 
 from database import db
 
@@ -47,43 +46,26 @@ class Students(db.Model):
 
     @staticmethod
     def find_by_username(username, job):
-        # connection = sqlite3.connect("All Information.db")
-        # cursor = connection.cursor()
-        # query = "SELECT * FROM people WHERE Username=?"
-        # result = cursor.execute(query, (name,)).fetchone()
-        # connection.commit()
-        # connection.close()
-
         result = Students.query.with_entities(Students.Firstname, Students.Lastname, Students.College, Students.Age,
                                               Students.Gender, Students.Religion, Students.Contact_Number,
                                               Students.FB_URL, Students.Job, Students.Image_Path,
                                               Students.Username)\
             .filter_by(Username=username, Teacher_Username=current_user.username, Job=job.capitalize()).first()
+        print(result)
         if result:
             return list(result)  # returning all information of a student in list
         else:
             return None
 
-    @staticmethod
-    def find_all_firstname():
-        # connection = sqlite3.connect("All Information.db")
-        # cursor = connection.cursor()
-        # firstnames = list(cursor.execute("SELECT FirstName FROM people").fetchall())
-        # connection.commit()
-        # connection.close()
-        firstnames = Students.query.with_entities(Students.Firstname).all()
-        return firstnames  # returning all firstnames in list of tuples
+    # @staticmethod
+    # def find_all_firstname():
+    #     firstnames = Students.query.with_entities(Students.Firstname).all()
+    #     return firstnames  # returning all firstnames in list of tuples
 
     @staticmethod
-    def find_all_username(teacher):
-        # connection = sqlite3.connect("All Information.db")
-        # cursor = connection.cursor()
-        # users = list(cursor.execute("SELECT FirstName, LastName, Username FROM people ").fetchall())
-        # connection.commit()
-        # connection.close()
-
+    def find_all_username():
         students = Students.query.with_entities(Students.Firstname, Students.Lastname, Students.Username)\
-            .filter_by(Teacher_Username=teacher, Job="Student").all()
+            .filter_by(Teacher_Username=current_user.user, Job="Student").all()
         student_usernames = []
         for student in students:
             student_usernames.append(tuple([" ".join(student[x] for x in range(2)), student[2]]))
@@ -95,24 +77,17 @@ class Students(db.Model):
         return student_usernames, teacher_username
         # returning all usernames in list of tuples -> (FirstName + LastName, Username)
 
-    @staticmethod
-    def find_username(firstname):
-        # connection = sqlite3.connect("All Information.db")
-        # cursor = connection.cursor()
-        # username = cursor.execute("SELECT Username FROM people WHERE FirstName=?", (firstname, )).fetchone()
-        # connection.commit()
-        # connection.close()
-        username = Students.query.with_entities(Students.Username).filter_by(Firstname=firstname).first()
-        print(username)
-        return username  # returning username in tuple -> (username, )
+    # @staticmethod
+    # def find_username(firstname):
+    #     username = Students.query.with_entities(Students.Username).filter_by(Firstname=firstname).first()
+    #     return username  # returning username in tuple -> (username, )
 
     @staticmethod
-    def generate_username(firstname, teacher_username):
-        usernames = [user[0] for user in Students.query.with_entities(Students.Username).all()]
+    def generate_username(firstname):
+        usernames = [username[0] for username in Students.query.with_entities(Students.Username).all()]
         unique_username = firstname.lower()
         while True:
             if unique_username not in usernames:
-                print("unique username", unique_username)
                 return unique_username
             else:
                 random_number = random.randint(0, 100)
@@ -126,57 +101,20 @@ class Students(db.Model):
         return image_path  # creating picture path using firstname -> static\pictures\firstname.jpg
 
     @staticmethod
-    def get_all_students(teacher_username):
-        # connection = sqlite3.connect("All Information.db")
-        # cursor = connection.cursor()
-        # query = "SELECT * FROM people"
-        # all_data = list(cursor.execute(query))
-        # connection.commit()
-        # connection.close()
+    def get_all_students():
         all_data = Students.query.with_entities(Students.Firstname, Students.Lastname, Students.College, Students.Age,
                                                 Students.Gender, Students.Religion, Students.Contact_Number,
                                                 Students.FB_URL, Students.Job, Students.Image_Path,
                                                 Students.Username)\
-            .filter_by(Teacher_Username=teacher_username, Job="Student").all()
+            .filter_by(Teacher_Username=current_user.username, Job="Student").all()
         return all_data
 
     @staticmethod
     def find_name_by_username(username):
-        # connection = sqlite3.connect("All Information.db")
-        # cursor = connection.cursor()
-        # query = "SELECT FirstName, Lastname FROM people WHERE Username=?"
         result = Students.query.with_entities(Students.Firstname, Students.Lastname)\
             .filter_by(Username=username).first()
         name = " ".join(result)
         return name
-
-    @staticmethod
-    def divide_in_there(persons):
-        teacher = persons[0]
-        persons.pop(0)
-        students = []
-        extra = len(persons) % 3
-        if extra:
-            for a in range(0, len(persons) - extra, 3):
-                groups = []
-                for b in range(3):
-                    groups.append(persons[0])
-                    persons.pop(0)
-                students.append(tuple(groups))
-            extra_group = []
-            while persons:
-                extra_group.append(persons[0])
-                persons.pop(0)
-            students.append(tuple(extra_group))
-
-        else:
-            for a in range(0, len(persons), 3):
-                groups = []
-                for b in range(3):
-                    groups.append(persons[0])
-                    persons.pop(0)
-                students.append(tuple(groups))
-        return teacher, students
 
     @staticmethod
     def divide(persons):

@@ -17,7 +17,7 @@ class Notice(Resource):
             teacher_name = None
         notices = NoticeBoard.query.with_entities(NoticeBoard.notice, NoticeBoard.name, NoticeBoard.date).all()[::-1]
         if current_user.is_authenticated:
-            student_usernames, teacher_username = Students.find_all_username(current_user.username)
+            student_usernames, teacher_username = Students.find_all_username()
         else:
             student_usernames = None
             teacher_username = None

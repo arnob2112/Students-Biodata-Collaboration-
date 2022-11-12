@@ -31,12 +31,6 @@ with app.app_context():
     db.create_all()
 
 
-# @app.before_first_request
-# def create_table():
-#     db.create_all()
-#     db.session.commit()
-
-
 api.add_resource(Home, "/")
 api.add_resource(Signup, "/signup")
 api.add_resource(Login, '/login')

@@ -33,6 +33,7 @@ class Signup(Resource):
 
     def post(self):
         username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
 
         user = Users.query.filter_by(username=username).first()
@@ -41,7 +42,7 @@ class Signup(Resource):
             print("user exists")
             return redirect(url_for('signup'))
 
-        new_user = Users(username=username, password=generate_password_hash(password, method='sha256'))
+        new_user = Users(username=username, email=email, password=generate_password_hash(password, method='sha256'))
         db.session.add(new_user)
         db.session.commit()
 
@@ -54,3 +55,16 @@ class Logout(Resource):
     def get(self):
         logout_user()
         return redirect(url_for('home'))
+
+
+# def verify_email(receiver_email):
+#     sender = "ehshanulhq@gmail.com"
+#     reciever = receiver_email
+#     message = "hello hello"
+#
+#     server = smtplib.SMTP('smtp.gmail.com', 587)
+#     server.starttls()
+#     server.login(sender, "urfmabihxymkssds")
+#     print("success")
+#     server.sendmail(sender, reciever, message)
+#     print("mail has sent.")

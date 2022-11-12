@@ -11,7 +11,7 @@ class Profile(Resource):
         student = Students.find_by_username(username, job)
         if student:
             data = {" ".join([student[x] for x in range(0, 2)]): [student[x] for x in range(2, len(student))]}
-            student_usernames, teacher_username = Students.find_all_username(current_user.username)
+            student_usernames, teacher_username = Students.find_all_username()
             print(data)
             return make_response(render_template("profile.html", data=data, student_usernames=student_usernames,
                                                  teacher_username=teacher_username))
